@@ -22,7 +22,7 @@
     --radius-sm: 8px;
   }
   html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { color: #7aaeff; }
 
@@ -49,46 +49,41 @@
   h1 { font-size: clamp(34px, 4.5vw, 56px); font-weight: 700; line-height: 1.1; letter-spacing: -1.5px; color: var(--text); margin-bottom: 1rem; }
   .page-sub { font-size: 18px; color: var(--muted); max-width: 520px; line-height: 1.7; }
 
-  /* PROJECTS */
-  .projects-section { padding: 20px 2rem 120px; }
-
+  /* ── PROJECT ROW ── */
+  /*
+    Each row is a full-width strip split into two halves:
+    - One half bleeds to the edge of the screen (the image)
+    - One half is constrained and holds the text
+    For "left" rows:  image on left (edge → center), text on right
+    For "right" rows: text on left, image on right (center → edge)
+  */
   .project-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    padding: 70px 0;
+    min-height: 480px;
     border-bottom: 1px solid var(--border);
   }
   .project-row:last-child { border-bottom: none; }
 
-  .project-row.right .project-image { order: 2; }
-  .project-row.right .project-info  { order: 1; }
-
-  /* IMAGE */
+  /* IMAGE PANEL — fills its grid cell fully */
   .project-image {
     position: relative;
-    border-radius: var(--radius);
     overflow: hidden;
-    border: 1px solid var(--border2);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
     background: var(--bg2);
-    aspect-ratio: 16/10;
     cursor: pointer;
   }
   .project-image img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .project-image:hover img {
-    transform: scale(1.06) translateY(-4px);
+    transform: scale(1.05) translateY(-4px);
   }
-
-  /* Placeholder */
   .img-placeholder {
     width: 100%; height: 100%;
+    min-height: 480px;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 12px;
@@ -96,16 +91,15 @@
     color: var(--muted);
     font-size: 14px; font-weight: 500;
     text-align: center; padding: 2rem;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    min-height: 240px;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .project-image:hover .img-placeholder {
-    transform: scale(1.04) translateY(-4px);
+    transform: scale(1.03) translateY(-4px);
   }
-  .placeholder-icon { font-size: 36px; opacity: 0.3; }
+  .placeholder-icon { font-size: 40px; opacity: 0.3; }
   .placeholder-text { opacity: 0.4; font-size: 13px; }
 
-  /* Overlay on hover */
+  /* Overlay shimmer */
   .project-image::after {
     content: '';
     position: absolute; inset: 0;
@@ -113,22 +107,30 @@
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
-    border-radius: var(--radius);
   }
   .project-image:hover::after { opacity: 1; }
 
-  /* INFO */
-  .project-info { display: flex; flex-direction: column; gap: 1rem; }
+  /* TEXT PANEL */
+  .project-info {
+    display: flex; flex-direction: column;
+    justify-content: center; gap: 1.1rem;
+    padding: 60px 64px;
+    background: var(--bg);
+  }
+
+  /* Left row: image is left cell (bleeds to left edge), text is right cell */
+  .project-row.left .project-image { order: 1; }
+  .project-row.left .project-info  { order: 2; }
+
+  /* Right row: text is left cell, image is right cell (bleeds to right edge) */
+  .project-row.right .project-image { order: 2; }
+  .project-row.right .project-info  { order: 1; }
+
   .project-num { font-size: 12px; font-weight: 600; letter-spacing: 1px; color: var(--accent); background: var(--accent-dim); display: inline-block; padding: 4px 10px; border-radius: 20px; width: fit-content; }
-  .project-info h2 { font-size: clamp(22px, 2.5vw, 30px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.2; color: var(--text); }
+  .project-info h2 { font-size: clamp(22px, 2.5vw, 32px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.2; color: var(--text); }
   .project-info p { font-size: 15px; color: var(--muted); line-height: 1.75; }
   .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.4rem; }
-  .tag {
-    font-size: 12px; font-weight: 500; padding: 4px 11px;
-    border-radius: 20px; border: 1px solid var(--border2);
-    color: var(--muted); background: var(--bg3);
-    letter-spacing: 0.3px;
-  }
+  .tag { font-size: 12px; font-weight: 500; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border2); color: var(--muted); background: var(--bg3); letter-spacing: 0.3px; }
 
   /* FOOTER */
   footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; }
@@ -136,10 +138,13 @@
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
-    .project-row { grid-template-columns: 1fr; gap: 2rem; }
-    .project-row.right .project-image { order: 0; }
-    .project-row.right .project-info  { order: 0; }
-    .projects-section { padding: 10px 1.2rem 80px; }
+    .project-row { grid-template-columns: 1fr; min-height: unset; }
+    .project-row.left .project-image,
+    .project-row.right .project-image { order: 1; }
+    .project-row.left .project-info,
+    .project-row.right .project-info  { order: 2; }
+    .img-placeholder { min-height: 260px; }
+    .project-info { padding: 36px 24px; }
     .page-header { padding: 120px 1.2rem 60px; }
   }
   @media (max-width: 640px) {
@@ -173,98 +178,96 @@
 </div>
 
 <!-- PROJECTS -->
-<section class="projects-section">
-  <div class="container">
+<div class="projects-wrap">
 
-    <!-- PROJECT 1 — image LEFT -->
-    <div class="project-row left">
-      <div class="project-image">
-
-       
-       
-        <div class="img-placeholder">
-          <div class="placeholder-icon">🖼️</div>
-          <div>Add your screenshot here</div>
-          <div class="placeholder-text">Replace with an &lt;img&gt; tag</div>
-        </div>
-      </div>
-      <div class="project-info">
-        <div class="project-num">Project #1</div>
-        <h2>End-to-end Onboarding Automation</h2>
-        <p>The client came to us with a fragmented, time-draining onboarding process spread across spreadsheets, documents, and emails. We replaced it with a fully customised system built specifically around their workflow, giving them one clear source of truth and complete control. By layering in smart automations and personalised communications, we eliminated manual work, reduced errors, and dramatically sped up onboarding. The result is a system that not only works, but scales with the business.</p>
-        <div class="project-tags">
-          <span class="tag">Airtable</span>
-          <span class="tag">n8n</span>
-          <span class="tag">Workflow Consult</span>
-        </div>
+  <!-- PROJECT 1 — image LEFT (bleeds to left edge) -->
+  <div class="project-row left">
+    <div class="project-image">
+      <!--
+        Replace with: <img src="your-screenshot.png" alt="Project One" />
+      -->
+      <div class="img-placeholder">
+        <div class="placeholder-icon">🖼️</div>
+        <div>Add your screenshot here</div>
+        <div class="placeholder-text">Replace with an &lt;img&gt; tag</div>
       </div>
     </div>
-
-    <!-- PROJECT 2 — image RIGHT -->
-    <div class="project-row right">
-      <div class="project-image">
-        <div class="img-placeholder">
-          <div class="placeholder-icon">🖼️</div>
-          <div>Add your screenshot here</div>
-          <div class="placeholder-text">Replace with an &lt;img&gt; tag</div>
-        </div>
-      </div>
-      <div class="project-info">
-        <div class="project-num">Project 02</div>
-        <h2>Project Title Two</h2>
-        <p>Replace this with a brief description of the project — what the client's problem was, what you built, and the outcome it delivered. Keep it concise and outcome-focused.</p>
-        <div class="project-tags">
-          <span class="tag">Automation</span>
-          <span class="tag">Process Design</span>
-          <span class="tag">Airtable</span>
-        </div>
+    <div class="project-info">
+      <div class="project-num">Project 01</div>
+      <h2>Project Title One</h2>
+      <p>Replace this with a brief description of the project — what the client's problem was, what you built, and the outcome it delivered. Keep it concise and outcome-focused.</p>
+      <div class="project-tags">
+        <span class="tag">Airtable</span>
+        <span class="tag">n8n</span>
+        <span class="tag">Workflow Consult</span>
       </div>
     </div>
-
-    <!-- PROJECT 3 — image LEFT -->
-    <div class="project-row left">
-      <div class="project-image">
-        <div class="img-placeholder">
-          <div class="placeholder-icon">🖼️</div>
-          <div>Add your screenshot here</div>
-          <div class="placeholder-text">Replace with an &lt;img&gt; tag</div>
-        </div>
-      </div>
-      <div class="project-info">
-        <div class="project-num">Project 03</div>
-        <h2>Project Title Three</h2>
-        <p>Replace this with a brief description of the project — what the client's problem was, what you built, and the outcome it delivered. Keep it concise and outcome-focused.</p>
-        <div class="project-tags">
-          <span class="tag">n8n</span>
-          <span class="tag">Systems Consult</span>
-          <span class="tag">Integration</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROJECT 4 — image RIGHT -->
-    <div class="project-row right">
-      <div class="project-image">
-        <div class="img-placeholder">
-          <div class="placeholder-icon">🖼️</div>
-          <div>Add your screenshot here</div>
-          <div class="placeholder-text">Replace with an &lt;img&gt; tag</div>
-        </div>
-      </div>
-      <div class="project-info">
-        <div class="project-num">Project 04</div>
-        <h2>Project Title Four</h2>
-        <p>Replace this with a brief description of the project — what the client's problem was, what you built, and the outcome it delivered. Keep it concise and outcome-focused.</p>
-        <div class="project-tags">
-          <span class="tag">Workflow Automation</span>
-          <span class="tag">Airtable</span>
-          <span class="tag">Ongoing Support</span>
-        </div>
-      </div>
-    </div>
-
   </div>
-</section>
+
+  <!-- PROJECT 2 — image RIGHT (bleeds to right edge) -->
+  <div class="project-row right">
+    <div class="project-info">
+      <div class="project-num">Project 02</div>
+      <h2>Project Title Two</h2>
+      <p>Replace this with a brief description of the project — what the client's problem was, what you built, and the outcome it delivered. Keep it concise and outcome-focused.</p>
+      <div class="project-tags">
+        <span class="tag">Automation</span>
+        <span class="tag">Process Design</span>
+        <span class="tag">Airtable</span>
+      </div>
+    </div>
+    <div class="project-image">
+      <div class="img-placeholder">
+        <div class="placeholder-icon">🖼️</div>
+        <div>Add your screenshot here</div>
+        <div class="placeholder-text">Replace with an &lt;img&gt; tag</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 3 — image LEFT (bleeds to left edge) -->
+  <div class="project-row left">
+    <div class="project-image">
+      <div class="img-placeholder">
+        <div class="placeholder-icon">🖼️</div>
+        <div>Add your screenshot here</div>
+        <div class="placeholder-text">Replace with an &lt;img&gt; tag</div>
+      </div>
+    </div>
+    <div class="project-info">
+      <div class="project-num">Project 03</div>
+      <h2>Project Title Three</h2>
+      <p>Replace this with a brief description of the project — what the client's problem was, what you built, and the outcome it delivered. Keep it concise and outcome-focused.</p>
+      <div class="project-tags">
+        <span class="tag">n8n</span>
+        <span class="tag">Systems Consult</span>
+        <span class="tag">Integration</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 4 — image RIGHT (bleeds to right edge) -->
+  <div class="project-row right">
+    <div class="project-info">
+      <div class="project-num">Project 04</div>
+      <h2>Project Title Four</h2>
+      <p>Replace this with a brief description of the project — what the client's problem was, what you built, and the outcome it delivered. Keep it concise and outcome-focused.</p>
+      <div class="project-tags">
+        <span class="tag">Workflow Automation</span>
+        <span class="tag">Airtable</span>
+        <span class="tag">Ongoing Support</span>
+      </div>
+    </div>
+    <div class="project-image">
+      <div class="img-placeholder">
+        <div class="placeholder-icon">🖼️</div>
+        <div>Add your screenshot here</div>
+        <div class="placeholder-text">Replace with an &lt;img&gt; tag</div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <footer>
   <p>© 2026 Systems Intelligence · New Zealand</p>
