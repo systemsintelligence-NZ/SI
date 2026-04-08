@@ -61,6 +61,17 @@
   .stat-item p:first-child { font-size: 26px; font-weight: 700; color: var(--text); margin: 0; }
   .stat-item p:last-child { font-size: 13px; color: var(--muted); margin: 0; }
 
+  /* === NEW: Hero layout === */
+  .hero-content { display: flex; align-items: center; justify-content: space-between; gap: 3rem; }
+  .hero-text { flex: 1; min-width: 0; }
+  .hero-visual { flex: 0 0 420px; max-width: 420px; }
+  .hero-visual img { width: 100%; height: auto; }
+  @media (max-width: 900px) {
+    .hero-content { flex-direction: column; }
+    .hero-visual { flex: none; max-width: 360px; width: 100%; }
+  }
+  /* === END NEW === */
+
   /* PROBLEM */
   #problem { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
   .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 3rem; }
@@ -148,13 +159,22 @@
 <!-- HERO -->
 <section id="hero">
   <div class="container">
-    <div class="hero-tag"><span></span> Based in New Zealand · Working remotely across NZ</div>
-    <h1>Clean systems.<br>Smarter workflows.<br><span style="color: var(--accent);">Real results.</span></h1>
-    <p class="subtext">We help NZ businesses remove operational mess, simplify their processes, and only automate what's actually worth automating — with honest, vendor-neutral advice.</p>
-    <div class="hero-btns">
-      <a href="#cta" class="btn-primary">Book a free consult</a>
-      <a href="#services" class="btn-secondary">See our services</a>
+    <!-- === NEW: Wrapped in hero-content flex layout === -->
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-tag"><span></span> Based in New Zealand · Working remotely across NZ</div>
+        <h1>Clean systems.<br>Smarter workflows.<br><span style="color: var(--accent);">Real results.</span></h1>
+        <p class="subtext">We help NZ businesses remove operational mess, simplify their processes, and only automate what's actually worth automating — with honest, vendor-neutral advice.</p>
+        <div class="hero-btns">
+          <a href="#cta" class="btn-primary">Book a free consult</a>
+          <a href="#services" class="btn-secondary">See our services</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="images/hero-illustration.svg" alt="Messy workflows transformed into clean, automated systems">
+      </div>
     </div>
+    <!-- === END NEW === -->
     <div class="hero-stats">
       <div class="stat-item"><p>100%</p><p>Vendor-neutral advice</p></div>
       <div class="stat-item"><p>NZ-based</p><p>Remote-first delivery</p></div>
