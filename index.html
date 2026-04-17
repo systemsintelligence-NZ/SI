@@ -7,32 +7,61 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #0d0f12;
-    --bg2: #13161b;
-    --bg3: #1a1e25;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #eef0f3;
-    --muted: #8a909c;
-    --accent: #4f8ef7;
-    --accent2: #2563c7;
-    --accent-dim: rgba(79,142,247,0.12);
-    --green: #2dd4a0;
-    --green-dim: rgba(45,212,160,0.1);
+    --bg: #14172a;
+    --bg2: #1b1e38;
+    --bg3: #242849;
+    --border: rgba(180,170,255,0.10);
+    --border2: rgba(180,170,255,0.18);
+    --text: #eef0ff;
+    --muted: #9ea0bf;
+    --accent: #7c9bff;
+    --accent2: #3a5dd6;
+    --accent-dim: rgba(124,155,255,0.15);
+    --green: #3ee0b2;
+    --green-dim: rgba(62,224,178,0.12);
     --radius: 12px;
     --radius-sm: 8px;
+    --scroll: 0px;
   }
   html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; }
+  body {
+    background: #14172a;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -20% -10% -20% -10%;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse 55% 45% at 18% calc(22% + var(--scroll) * 0.15), rgba(118, 96, 220, 0.45) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 82% calc(75% - var(--scroll) * 0.12), rgba(72, 120, 230, 0.40) 0%, transparent 62%),
+      radial-gradient(ellipse 70% 55% at 50% calc(110% + var(--scroll) * 0.08), rgba(145, 110, 235, 0.30) 0%, transparent 65%),
+      linear-gradient(180deg, #171a33 0%, #14172a 50%, #121530 100%);
+    filter: saturate(1.05);
+    transition: background-position 0.2s ease-out;
+    pointer-events: none;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(20,23,42,0.55) 100%);
+    pointer-events: none;
+  }
   a { color: var(--accent); text-decoration: none; }
   a:hover { color: #7aaeff; }
 
   /* NAV */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,15,18,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; }
-  .logo { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; text-decoration: none; }
-  .logo img { height: 45px; width: 45px; object-fit: contain; }
-  .logo span { color: var(--accent); }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: linear-gradient(180deg, rgba(210,215,255,0.10) 0%, rgba(180,190,255,0.06) 100%); backdrop-filter: blur(22px) saturate(1.3); -webkit-backdrop-filter: blur(22px) saturate(1.3); border-bottom: 1px solid rgba(200,195,255,0.22); box-shadow: 0 4px 30px rgba(10,12,30,0.35), inset 0 1px 0 rgba(255,255,255,0.08); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 88px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; }
+  .logo img { height: 72px; width: auto; object-fit: contain; display: block; }
   .nav-links { display: flex; gap: 2rem; align-items: center; }
   .nav-links a { color: var(--muted); font-size: 14px; transition: color 0.2s; }
   .nav-links a:hover { color: var(--text); }
@@ -50,7 +79,13 @@
   .subtext { font-size: 18px; color: var(--muted); max-width: 560px; line-height: 1.7; margin-top: 1.2rem; }
 
   /* HERO */
-  #hero { padding-top: 160px; padding-bottom: 120px; background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(79,142,247,0.12) 0%, transparent 70%); border-bottom: 1px solid var(--border); }
+  #hero { padding-top: 160px; padding-bottom: 120px; background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(140, 120, 240, 0.18) 0%, transparent 70%); border-bottom: 1px solid var(--border); }
+  #problem, #how, #cta { background: rgba(26,29,56,0.55); }
+  .problem-item { background: rgba(26,29,56,0.7); }
+  .service-card { background: rgba(27,30,56,0.65); backdrop-filter: blur(6px); }
+  .service-card.featured { background: linear-gradient(135deg, rgba(36,40,73,0.8) 0%, rgba(124,155,255,0.10) 100%); }
+  .team-card { background: rgba(27,30,56,0.7); }
+  .step { background: rgba(36,40,73,0.75); }
   .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 6px 14px; font-size: 13px; color: var(--muted); margin-bottom: 2rem; }
   .hero-tag span { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; }
   .hero-btns { display: flex; gap: 14px; margin-top: 2.5rem; flex-wrap: wrap; }
@@ -147,14 +182,13 @@
   <div class="nav-inner">
     <a href="#" class="logo">
       <img src="images/logo.png" alt="Systems Intelligence logo">
-      Systems<span>Intelligence</span>
     </a>
     <div class="nav-links">
       <a href="#services">Services</a>
       <a href="projects.html">Projects</a>
       <a href="#how">How it works</a>
       <a href="#about">About</a>
-      <a href="#cta" class="nav-cta">Book a free consult</a>
+      <a href="mailto:info@systemsintell.com?subject=Free%20Consult%20Inquiry&body=Hi%20Systems%20Intelligence%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20free%20consult%20to%20discuss%20how%20you%20can%20help%20improve%20my%20business%20systems.%0A%0ACould%20we%20arrange%20a%20time%20to%20talk%3F%0A%0AThanks%2C" class="nav-cta">Book a free consult</a>
     </div>
   </div>
 </nav>
@@ -164,11 +198,11 @@
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
-        <div class="hero-tag"><span></span> Based in New Zealand · Working remotely across NZ</div>
+        <div class="hero-tag"><span></span> Based in New Zealand · Working remotely across the Globe</div>
         <h1>Clean systems.<br>Smarter workflows.<br><span style="color: var(--accent);">Real results.</span></h1>
-        <p class="subtext">We help NZ businesses remove operational mess, simplify their processes, and only automate what's actually worth automating — with honest, vendor-neutral advice.</p>
+        <p class="subtext">We help NZ businesses remove operational mess, simplify their processes, and only automate what's actually worth automating, with honest, vendor neutral advice.</p>
         <div class="hero-btns">
-          <a href="#cta" class="btn-primary">Book a free consult</a>
+          <a href="mailto:info@systemsintell.com?subject=Free%20Consult%20Inquiry&body=Hi%20Systems%20Intelligence%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20free%20consult%20to%20discuss%20how%20you%20can%20help%20improve%20my%20business%20systems.%0A%0ACould%20we%20arrange%20a%20time%20to%20talk%3F%0A%0AThanks%2C" class="btn-primary">Book a free consult</a>
           <a href="#services" class="btn-secondary">See our services</a>
         </div>
       </div>
@@ -177,8 +211,8 @@
       </div>
     </div>
     <div class="hero-stats">
-      <div class="stat-item"><p>100%</p><p>Vendor-neutral advice</p></div>
-      <div class="stat-item"><p>NZ-based</p><p>Remote-first delivery</p></div>
+      <div class="stat-item"><p>100%</p><p>Vendor neutral advice</p></div>
+      <div class="stat-item"><p>NZ based</p><p>Remote first delivery</p></div>
       <div class="stat-item"><p>Focused</p><p>Small team, big impact</p></div>
     </div>
   </div>
@@ -222,20 +256,20 @@
     <p class="subtext">Automation built on broken processes is just faster chaos. We fix the foundation before we touch the tech.</p>
     <div class="services-grid">
       <div class="service-card featured">
-        <div class="service-num">01 — MOST POPULAR</div>
+        <div class="service-num">01, MOST POPULAR</div>
         <h3>Workflow Consult & Consulting</h3>
-        <p>We map your current processes end-to-end, identify what's slowing you down, and deliver a clear, actionable improvement plan.</p>
+        <p>We map your current processes end to end, identify what's slowing you down, and deliver a clear, actionable improvement plan.</p>
         <ul class="service-features">
           <li>Full operational workflow mapping</li>
           <li>Bottleneck and redundancy analysis</li>
           <li>Prioritised recommendations report</li>
-          <li>Vendor-neutral tool advice</li>
+          <li>Vendor neutral tool advice</li>
         </ul>
       </div>
       <div class="service-card">
         <div class="service-num">02</div>
         <h3>Automation Services</h3>
-        <p>Once your processes make sense, we build automations that actually hold up — using proven tools like Airtable and n8n.</p>
+        <p>Once your processes make sense, we build automations that actually hold up, using proven tools like Airtable and n8n.</p>
         <ul class="service-features">
           <li>Custom workflow automation builds</li>
           <li>Airtable database design</li>
@@ -267,12 +301,12 @@
       <div class="step">
         <div class="step-num">1</div>
         <h3>Discovery call</h3>
-        <p>We spend time understanding your business, your team, and where the pain really is. No jargon, no pitch — just honest conversation.</p>
+        <p>We spend time understanding your business, your team, and where the pain really is. No jargon, no pitch, just honest conversation.</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <h3>Consult & design</h3>
-        <p>We map your workflows, identify the biggest opportunities, and design a clear solution with you — not for you.</p>
+        <p>We map your workflows, identify the biggest opportunities, and design a clear solution with you, not for you.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
@@ -290,21 +324,21 @@
       <div class="about-text">
         <span class="label">Who we are</span>
         <h2>A small team with a sharp focus.</h2>
-        <p>Systems Intelligence is a two-person consultancy built on the belief that most businesses don't need more software — they need clearer thinking about the systems they already have.</p>
+        <p>Systems Intelligence is a two person consultancy built on the belief that most businesses don't need more software, they need clearer thinking about the systems they already have.</p>
         <p>We're based in New Zealand and work remotely with clients across the country. Our size is a feature, not a limitation: every client works directly with us, not handed off to a junior team.</p>
         <div class="about-team">
           <div class="team-card">
             <div class="avatar blue">G</div>
             <div class="team-info">
               <p>George</p>
-              <p>CEO — Client relationships & strategy</p>
+              <p>CEO, Client relationships & strategy</p>
             </div>
           </div>
           <div class="team-card">
             <div class="avatar green">Z</div>
             <div class="team-info">
               <p>Zac</p>
-              <p>CTO — Systems design & automation</p>
+              <p>CTO, Systems design & automation</p>
             </div>
           </div>
         </div>
@@ -316,11 +350,11 @@
         </div>
         <div class="value-item">
           <div class="value-dot"></div>
-          <p><strong>Vendor-neutral.</strong> We're not resellers. We recommend what's right for you, full stop.</p>
+          <p><strong>Vendor neutral.</strong> We're not resellers. We recommend what's right for you, full stop.</p>
         </div>
         <div class="value-item">
           <div class="value-dot"></div>
-          <p><strong>Long-term relationships.</strong> Our goal isn't a one-time project — it's to grow with you over time.</p>
+          <p><strong>Long term relationships.</strong> Our goal isn't a one time project, it's to grow with you over time.</p>
         </div>
         <div class="value-item">
           <div class="value-dot"></div>
@@ -336,10 +370,10 @@
   <div class="container">
     <span class="label">Get started</span>
     <h2>Ready to clean up<br>your operations?</h2>
-    <p>Book a free 30-minute discovery call. No commitment, no pitch deck — just an honest look at where we can help.</p>
-    <a href="mailto:info@systemsintell.com" class="btn-primary" style="display: inline-block;">Book a free consult →</a>
+    <p>Book a free 30 minute discovery call. No commitment, no pitch deck, just an honest look at where we can help.</p>
+    <a href="mailto:info@systemsintell.com?subject=Free%20Consult%20Inquiry&body=Hi%20Systems%20Intelligence%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20free%20consult%20to%20discuss%20how%20you%20can%20help%20improve%20my%20business%20systems.%0A%0ACould%20we%20arrange%20a%20time%20to%20talk%3F%0A%0AThanks%2C" class="btn-primary" style="display: inline-block;">Book a free consult →</a>
     <div class="cta-contact">
-      <div class="contact-item">Email us at <a href="mailto:hello@systemsintelligence.co.nz">info@systemsintell.com</a></div>
+      <div class="contact-item">Email us at <a href="mailto:info@systemsintell.com">info@systemsintell.com</a></div>
       <div class="contact-item">All meetings via <a href="#">Zoom</a></div>
     </div>
   </div>
@@ -349,5 +383,20 @@
   <p>© 2026 Systems Intelligence · New Zealand</p>
 </footer>
 
+<script>
+  (function(){
+    let ticking = false;
+    const root = document.documentElement;
+    function update(){
+      const y = window.scrollY || 0;
+      root.style.setProperty('--scroll', y + 'px');
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+    update();
+  })();
+</script>
 </body>
 </html>
