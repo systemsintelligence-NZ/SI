@@ -86,178 +86,30 @@
   /* HERO VISUAL — workflow graph mock */
   .hero-visual {
     position: relative;
-    aspect-ratio: 1 / 1;
-    max-width: 560px;
+    max-width: 600px;
     justify-self: end;
     width: 100%;
   }
-  .workflow-mock {
-    position: relative;
-    width: 100%; height: 100%;
-    border-radius: 24px;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.015) 100%),
-      radial-gradient(ellipse at top left, rgba(94, 106, 210, 0.18), transparent 60%);
-    border: 1px solid var(--border);
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.05),
-      0 30px 80px rgba(0, 0, 0, 0.6),
-      0 0 120px rgba(94, 106, 210, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    overflow: hidden;
+  .hero-img {
+    width: 120%;
+    max-width: none;
+    margin-left: -10%;
+    height: auto;
+    display: block;
     transform-style: preserve-3d;
     transition: transform 0.6s var(--ease);
     will-change: transform;
-  }
-  /* Window chrome */
-  .mock-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.02);
-  }
-  .mock-dots { display: flex; gap: 6px; }
-  .mock-dots i {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    display: inline-block;
-  }
-  .mock-dots i:first-child { background: rgba(255, 90, 90, 0.35); }
-  .mock-dots i:nth-child(2) { background: rgba(255, 200, 60, 0.35); }
-  .mock-dots i:nth-child(3) { background: rgba(80, 220, 130, 0.35); }
-  .mock-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--fg-subtle);
-    letter-spacing: 0.06em;
-    margin-left: auto;
-  }
-
-  /* Canvas with grid + nodes */
-  .mock-canvas {
-    position: absolute;
-    inset: 52px 0 0 0;
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-    background-size: 28px 28px;
-  }
-  .mock-canvas::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 30% 40%, rgba(94, 106, 210, 0.2), transparent 55%);
-    pointer-events: none;
-  }
-
-  .node {
-    position: absolute;
-    background: linear-gradient(180deg, rgba(20, 20, 26, 0.92), rgba(12, 12, 16, 0.92));
-    border: 1px solid var(--border-hover);
-    border-radius: 10px;
-    padding: 10px 12px;
-    min-width: 130px;
-    backdrop-filter: blur(8px);
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.04),
-      0 8px 24px rgba(0, 0, 0, 0.5);
-    display: flex; align-items: center; gap: 10px;
-    font-size: 12px;
-    color: var(--fg);
-    animation: nodeFloat 6s ease-in-out infinite;
-  }
-  .node .icon {
-    width: 24px; height: 24px; flex: none;
-    border-radius: 6px;
-    background: linear-gradient(135deg, rgba(94, 106, 210, 0.3), rgba(94, 106, 210, 0.1));
-    border: 1px solid var(--border-accent);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--accent);
-  }
-  .node .icon svg { width: 12px; height: 12px; }
-  .node .label { display: flex; flex-direction: column; line-height: 1.15; }
-  .node .label b { font-weight: 500; font-size: 12px; color: var(--fg); }
-  .node .label span { font-size: 10px; color: var(--fg-muted); font-family: 'JetBrains Mono', monospace; }
-  .node .status {
-    margin-left: auto;
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #3EE0B2;
-    box-shadow: 0 0 8px rgba(62, 224, 178, 0.7);
-    animation: nodePulse 1.6s ease-in-out infinite;
-  }
-  .node.accent {
-    border-color: var(--border-accent);
-    box-shadow:
-      0 0 0 1px var(--border-accent),
-      0 10px 32px rgba(94, 106, 210, 0.25),
-      0 0 40px rgba(94, 106, 210, 0.2);
-  }
-  .node.accent .status { background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-
-  .node-1 { top: 14%; left: 8%; animation-delay: 0s; }
-  .node-2 { top: 8%; right: 6%; animation-delay: -2s; }
-  .node-3 { top: 44%; left: 26%; animation-delay: -4s; }
-  .node-4 { bottom: 18%; left: 8%; animation-delay: -1s; }
-  .node-5 { bottom: 12%; right: 8%; animation-delay: -3s; }
-
-  @keyframes nodeFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-  }
-  @keyframes nodePulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-
-  /* Connection lines (SVG) */
-  .mock-lines { position: absolute; inset: 52px 0 0 0; width: 100%; height: calc(100% - 52px); pointer-events: none; }
-  .mock-lines path {
-    stroke: url(#wire-grad);
-    stroke-width: 1.5;
-    fill: none;
-    stroke-dasharray: 4 4;
-    animation: wireDash 8s linear infinite;
-    opacity: 0.6;
-  }
-  @keyframes wireDash { to { stroke-dashoffset: -80; } }
-
-  /* Floating metric card */
-  .metric-card {
-    position: absolute;
-    bottom: -18px; left: -18px;
-    background: linear-gradient(180deg, rgba(20, 20, 26, 0.95), rgba(12, 12, 16, 0.95));
-    border: 1px solid var(--border-hover);
-    border-radius: 14px;
-    padding: 14px 16px;
-    min-width: 170px;
-    backdrop-filter: blur(16px);
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.05),
-      0 20px 40px rgba(0, 0, 0, 0.6),
-      0 0 60px rgba(94, 106, 210, 0.15);
-    display: flex; flex-direction: column; gap: 6px;
-  }
-  .metric-card .metric-label {
-    font-size: 10px; font-family: 'JetBrains Mono', monospace;
-    color: var(--fg-muted); letter-spacing: 0.12em; text-transform: uppercase;
-  }
-  .metric-card .metric-value {
-    font-size: 1.5rem; font-weight: 600; color: var(--fg);
-    letter-spacing: -0.02em; line-height: 1;
-  }
-  .metric-card .metric-trend {
-    font-size: 11px; color: #3EE0B2;
-    font-family: 'JetBrains Mono', monospace;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
   }
 
   @media (max-width: 900px) {
     .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .hero-visual { max-width: 440px; justify-self: center; }
+    .hero-visual { max-width: 520px; justify-self: center; }
+    .hero-img { width: 100%; margin-left: 0; }
   }
   @media (max-width: 560px) {
     .hero-stats { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
     .hero-stats > :last-child { grid-column: 1 / -1; }
-    .metric-card { left: 8px; bottom: -14px; min-width: 140px; padding: 12px; }
   }
 
   /* =======================
@@ -724,76 +576,9 @@
         </div>
       </div>
 
-      <!-- Hero visual: workflow graph mockup -->
+      <!-- Hero visual: SVG Illustration -->
       <div class="hero-visual reveal" data-delay="2">
-        <div class="workflow-mock spotlight" data-tilt>
-          <div class="mock-header">
-            <div class="mock-dots" aria-hidden="true"><i></i><i></i><i></i></div>
-            <div class="mock-title">systems / workflow.flow</div>
-          </div>
-          <div class="mock-canvas" aria-hidden="true"></div>
-
-          <!-- Connection wires -->
-          <svg class="mock-lines" viewBox="0 0 500 450" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="wire-grad" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="#5E6AD2" stop-opacity="0.9"/>
-                <stop offset="100%" stop-color="#5E6AD2" stop-opacity="0.2"/>
-              </linearGradient>
-            </defs>
-            <path d="M 95 85 C 200 85, 180 200, 260 220" />
-            <path d="M 400 70 C 360 150, 320 180, 280 210" />
-            <path d="M 280 240 C 220 280, 180 340, 110 370" />
-            <path d="M 300 240 C 360 300, 380 340, 410 370" />
-          </svg>
-
-          <!-- Nodes -->
-          <div class="node node-1" style="top: 14%; left: 6%;">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10"/><circle cx="17" cy="19" r="3"/></svg>
-            </div>
-            <div class="label"><b>Intake form</b><span>airtable</span></div>
-            <div class="status" aria-hidden="true"></div>
-          </div>
-
-          <div class="node node-2" style="top: 8%; right: 6%;">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v16H4z"/><path d="M4 12h16"/><path d="M12 4v16"/></svg>
-            </div>
-            <div class="label"><b>Validate</b><span>n8n</span></div>
-            <div class="status" aria-hidden="true"></div>
-          </div>
-
-          <div class="node node-3 accent" style="top: 42%; left: 30%;">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-            </div>
-            <div class="label"><b>Route &amp; notify</b><span>active</span></div>
-            <div class="status" aria-hidden="true"></div>
-          </div>
-
-          <div class="node node-4" style="bottom: 14%; left: 6%;">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92V21a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 5.18 2 2 0 0 1 4.11 3h4.09a2 2 0 0 1 2 1.72 12.85 12.85 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.91 11a16 16 0 0 0 6 6l1.36-1.54a2 2 0 0 1 2.11-.45 12.85 12.85 0 0 0 2.81.7 2 2 0 0 1 1.72 2z"/></svg>
-            </div>
-            <div class="label"><b>Notify team</b><span>slack</span></div>
-            <div class="status" aria-hidden="true"></div>
-          </div>
-
-          <div class="node node-5" style="bottom: 14%; right: 6%;">
-            <div class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </div>
-            <div class="label"><b>Assign owner</b><span>auto</span></div>
-            <div class="status" aria-hidden="true"></div>
-          </div>
-        </div>
-
-        <div class="metric-card" aria-hidden="true">
-          <span class="metric-label">Hours saved / wk</span>
-          <span class="metric-value">18.4</span>
-          <span class="metric-trend">↑ 32% this quarter</span>
-        </div>
+        <img src="images/hero-illustration.svg" alt="Systems Workflow Illustration" class="hero-img" data-tilt>
       </div>
     </div>
   </div>
