@@ -3,7 +3,7 @@
    Shared styles for index.html and projects.html
    ========================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -517,4 +517,298 @@ section { position: relative; padding: clamp(4rem, 8vw, 8rem) 0; }
 @media (max-width: 768px) {
   .container { padding: 0 1.25rem; }
   .nav-inner { padding: 0 1.25rem; }
+}
+
+/* =========================================================================
+   2026 visual refresh: living operations cockpit
+   ========================================================================= */
+
+:root {
+  --bg-deep: #050706;
+  --bg-base: #080c0b;
+  --bg-elev: #0e1412;
+  --bg-elev-2: #121b18;
+  --surface: rgba(246, 255, 249, 0.065);
+  --surface-hover: rgba(246, 255, 249, 0.105);
+  --fg: #f5fbf7;
+  --fg-muted: #aebbb5;
+  --fg-subtle: rgba(245, 251, 247, 0.66);
+  --accent: #38d6ae;
+  --accent-bright: #7cf2ce;
+  --accent-glow: rgba(56, 214, 174, 0.32);
+  --accent-warm: #f6be4f;
+  --accent-coral: #ff7e67;
+  --accent-ink: #06130f;
+  --border: rgba(224, 244, 232, 0.09);
+  --border-hover: rgba(224, 244, 232, 0.18);
+  --border-accent: rgba(56, 214, 174, 0.34);
+}
+
+* { letter-spacing: 0 !important; }
+
+body {
+  background:
+    linear-gradient(180deg, rgba(8, 12, 11, 0.86), rgba(5, 7, 6, 0.98)),
+    #080c0b;
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Space Grotesk', 'Manrope', system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.display {
+  font-size: 4.25rem;
+  line-height: 1.02;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #e9fff5 58%, rgba(224, 244, 232, 0.72) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+h1 { font-size: 3.4rem; }
+h2 { font-size: 2.75rem; }
+h3 { font-size: 1.125rem; }
+
+p {
+  color: var(--fg-muted);
+  font-weight: 500;
+}
+
+.accent-text {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-warm) 50%, var(--accent-bright) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-base-gradient {
+  background:
+    linear-gradient(135deg, rgba(56, 214, 174, 0.1) 0%, transparent 34%),
+    linear-gradient(210deg, rgba(246, 190, 79, 0.105) 0%, transparent 42%),
+    linear-gradient(180deg, #0b1110 0%, #080c0b 48%, #050706 100%);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(245, 251, 247, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 251, 247, 0.035) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(56, 214, 174, 0.08) 0 1px, transparent 1px 18px);
+  background-size: 72px 72px, 72px 72px, 18px 18px;
+  -webkit-mask-image: linear-gradient(180deg, black 0%, black 62%, transparent 92%);
+  mask-image: linear-gradient(180deg, black 0%, black 62%, transparent 92%);
+  opacity: 0.72;
+}
+
+.bg-noise { opacity: 0.035; }
+
+.bg-blobs {
+  z-index: -7;
+  overflow: hidden;
+  opacity: 0.9;
+}
+
+.blob {
+  border-radius: 0;
+  filter: blur(46px);
+  height: 150px;
+  width: 88vw;
+  background:
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(56, 214, 174, 0.05) 15%,
+      rgba(56, 214, 174, 0.28) 38%,
+      rgba(246, 190, 79, 0.22) 62%,
+      transparent 100%);
+  transform-origin: center;
+}
+
+.blob-1 {
+  top: 11%;
+  left: 8%;
+  animation: revenueCurrent 13s ease-in-out infinite;
+}
+
+.blob-2 {
+  top: 42%;
+  left: -20%;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 126, 103, 0.14), rgba(56, 214, 174, 0.2), transparent);
+  animation: revenueCurrent 15s ease-in-out infinite reverse;
+}
+
+.blob-3 {
+  top: 65%;
+  right: -18%;
+  background:
+    linear-gradient(90deg, transparent, rgba(246, 190, 79, 0.18), rgba(124, 242, 206, 0.18), transparent);
+  animation: revenueCurrent 16s ease-in-out infinite;
+}
+
+.blob-4 {
+  bottom: 4%;
+  left: 6%;
+  height: 110px;
+  background:
+    linear-gradient(90deg, transparent, rgba(56, 214, 174, 0.12), rgba(246, 190, 79, 0.16), transparent);
+  animation: revenueCurrent 18s ease-in-out infinite reverse;
+}
+
+@keyframes revenueCurrent {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-7deg) skewX(-12deg); opacity: 0.74; }
+  50% { transform: translate3d(42px, -22px, 0) rotate(-3deg) skewX(-12deg); opacity: 1; }
+}
+
+.label,
+.service-num,
+.audit-head .doc-meta,
+.audit-stat-label,
+.audit-stat-trend,
+.audit-section-title,
+.audit-rec .rec-num,
+.audit-rec .rec-pill,
+.project-num,
+.page-meta {
+  font-family: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace !important;
+}
+
+.label {
+  background: rgba(246, 255, 249, 0.07);
+  border-color: rgba(124, 242, 206, 0.2);
+  color: #d9f8ed;
+}
+
+.label::before {
+  background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+  box-shadow: 0 0 16px rgba(56, 214, 174, 0.5);
+}
+
+.site-nav {
+  background: rgba(6, 10, 9, 0.58);
+  border-bottom-color: rgba(224, 244, 232, 0.08);
+}
+
+.site-nav.scrolled {
+  background: rgba(6, 10, 9, 0.88);
+  border-bottom-color: rgba(224, 244, 232, 0.12);
+}
+
+.nav-links a:hover {
+  color: #f8fff9;
+  background: rgba(246, 255, 249, 0.08);
+}
+
+.nav-cta,
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-warm)) !important;
+  color: var(--accent-ink) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 14px 36px rgba(56, 214, 174, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38);
+}
+
+.nav-cta:hover,
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-bright), #ffd978) !important;
+  color: var(--accent-ink) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 18px 42px rgba(56, 214, 174, 0.28),
+    0 0 36px rgba(246, 190, 79, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.48);
+}
+
+.btn,
+.nav-cta,
+.nav-links a,
+.nav-toggle,
+.mobile-menu .nav-cta,
+.card,
+.cta-card,
+.projects-cta,
+.project-modal-inner,
+.project-media img,
+.project-modal-media img,
+.audit-mock,
+.team-card {
+  border-radius: 8px !important;
+}
+
+.btn-secondary {
+  background: rgba(246, 255, 249, 0.075);
+  color: #f5fbf7;
+  box-shadow:
+    inset 0 0 0 1px rgba(224, 244, 232, 0.1),
+    0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.btn-secondary:hover {
+  background: rgba(246, 255, 249, 0.12);
+  box-shadow:
+    inset 0 0 0 1px rgba(124, 242, 206, 0.28),
+    0 14px 36px rgba(0, 0, 0, 0.28),
+    0 0 42px rgba(56, 214, 174, 0.12);
+}
+
+.card {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.026)),
+    linear-gradient(180deg, rgba(56, 214, 174, 0.045), rgba(246, 190, 79, 0.025));
+  border-color: rgba(224, 244, 232, 0.12);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.025),
+    0 18px 50px rgba(0, 0, 0, 0.34);
+}
+
+.card::before {
+  border-radius: 8px;
+  background:
+    radial-gradient(circle 280px at var(--mx, 50%) var(--my, 50%),
+      rgba(56, 214, 174, 0.16), transparent 62%);
+}
+
+.card:hover {
+  border-color: rgba(124, 242, 206, 0.26);
+  box-shadow:
+    0 0 0 1px rgba(124, 242, 206, 0.12),
+    0 20px 58px rgba(0, 0, 0, 0.44),
+    0 0 70px rgba(56, 214, 174, 0.12);
+}
+
+.section-divider {
+  border-top-color: rgba(224, 244, 232, 0.085);
+}
+
+.section-divider::before,
+.site-footer::before {
+  background: linear-gradient(90deg, transparent, rgba(56, 214, 174, 0.32), rgba(246, 190, 79, 0.18), transparent);
+}
+
+.site-footer {
+  background:
+    linear-gradient(180deg, rgba(8, 12, 11, 0.82), #050706);
+}
+
+.hero-sub,
+.page-sub,
+.subtext {
+  font-size: 1.08rem !important;
+}
+
+@media (max-width: 900px) {
+  .display { font-size: 3.45rem; }
+  h1 { font-size: 2.7rem; }
+  h2 { font-size: 2.2rem; }
+}
+
+@media (max-width: 560px) {
+  .display { font-size: 2.62rem; }
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.88rem; }
+  .hero-sub,
+  .page-sub,
+  .subtext { font-size: 1rem !important; }
 }
