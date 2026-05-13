@@ -23,6 +23,7 @@
     gap: 4rem;
     align-items: center;
   }
+  .hero-text { min-width: 0; }
   .hero-eyebrow {
     display: inline-flex;
     align-items: center;
@@ -49,8 +50,12 @@
     content: ''; position: absolute; inset: 4px;
     border-radius: 50%; background: #fff; opacity: 0.8;
   }
+  .hero-eyebrow-text { min-width: 0; }
+  .hero-eyebrow-break { display: inline; }
+  .hero-eyebrow-separator { display: inline; }
   .hero-title { margin: 0; }
   .hero-title br + span { display: inline-block; }
+  .mobile-title-break { display: inline; }
   .hero-sub {
     color: var(--fg-muted);
     font-size: clamp(1rem, 1.4vw, 1.125rem);
@@ -110,6 +115,20 @@
   @media (max-width: 560px) {
     .hero-stats { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
     .hero-stats > :last-child { grid-column: 1 / -1; }
+    .hero-eyebrow {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr);
+      align-items: flex-start;
+      line-height: 1.35;
+      width: calc(100vw - 2.5rem);
+      max-width: 100%;
+      white-space: normal;
+    }
+    .hero-eyebrow-text { overflow-wrap: break-word; white-space: normal; }
+    .hero-eyebrow-break { display: block; }
+    .hero-eyebrow-separator { display: none; }
+    .hero-sub { max-width: calc(100vw - 2.5rem); }
+    .mobile-title-break { display: block; }
   }
 
   /* =======================
@@ -834,6 +853,549 @@
     z-index: 1;
   }
 
+  /* =======================
+     ROI CALCULATOR
+     ======================= */
+  #roi {
+    overflow: hidden;
+  }
+
+  #roi::after {
+    content: '';
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 6rem;
+    height: 38%;
+    background:
+      linear-gradient(90deg, transparent, rgba(56, 214, 174, 0.14), rgba(246, 190, 79, 0.08), transparent);
+    clip-path: polygon(0 72%, 13% 66%, 25% 70%, 39% 48%, 54% 54%, 69% 30%, 84% 38%, 100% 18%, 100% 100%, 0 100%);
+    opacity: 0.64;
+    pointer-events: none;
+  }
+
+  .roi-head {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.55fr);
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: 3rem;
+  }
+
+  .roi-head .section-head {
+    margin-bottom: 0;
+  }
+
+  .roi-proof {
+    border-left: 1px solid rgba(224, 244, 232, 0.14);
+    padding-left: 1.5rem;
+  }
+
+  .roi-proof p {
+    font-size: 14px;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .roi-proof-list {
+    display: grid;
+    gap: 0.55rem;
+    list-style: none;
+  }
+
+  .roi-proof-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--fg-muted);
+    font-size: 13px;
+  }
+
+  .roi-proof-list li::before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+    box-shadow: 0 0 14px rgba(56, 214, 174, 0.38);
+  }
+
+  .roi-calculator {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.82fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .roi-input-panel,
+  .roi-output-panel,
+  .roi-breakdown-panel {
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .roi-input-panel {
+    display: grid;
+    gap: 1.35rem;
+  }
+
+  .roi-panel-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .roi-panel-kicker,
+  .roi-mini-label,
+  .roi-metric-label,
+  .roi-output-note,
+  .roi-scenario-label {
+    font-family: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    text-transform: uppercase;
+  }
+
+  .roi-panel-kicker {
+    color: var(--accent-bright);
+    font-size: 11px;
+    letter-spacing: 0.12em !important;
+  }
+
+  .roi-panel-head h3 {
+    margin-top: 0.25rem;
+    font-size: 1.45rem;
+  }
+
+  .roi-reset {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 13px;
+    border: 1px solid rgba(224, 244, 232, 0.13);
+    border-radius: 8px;
+    background: rgba(246, 255, 249, 0.06);
+    color: var(--fg);
+    cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  }
+
+  .roi-reset:hover {
+    background: rgba(246, 255, 249, 0.11);
+    border-color: rgba(124, 242, 206, 0.28);
+    transform: translateY(-1px);
+  }
+
+  .roi-reset svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  .roi-segmented {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 5px;
+    border: 1px solid rgba(224, 244, 232, 0.11);
+    border-radius: 8px;
+    background: rgba(5, 8, 7, 0.42);
+  }
+
+  .roi-scenario {
+    min-height: 44px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fg-muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+  }
+
+  .roi-scenario:hover {
+    color: var(--fg);
+    background: rgba(246, 255, 249, 0.07);
+  }
+
+  .roi-scenario[aria-pressed="true"] {
+    color: var(--accent-ink);
+    background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 10px 26px rgba(56, 214, 174, 0.18);
+  }
+
+  .roi-scenario:active {
+    transform: scale(0.97);
+  }
+
+  .roi-fieldsets {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .roi-fieldset {
+    border: 1px solid rgba(224, 244, 232, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    background:
+      linear-gradient(135deg, rgba(246, 255, 249, 0.055), rgba(56, 214, 174, 0.025));
+  }
+
+  .roi-fieldset legend {
+    padding: 0 0.4rem;
+    color: var(--fg);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .roi-field {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .roi-field + .roi-field {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(224, 244, 232, 0.08);
+  }
+
+  .roi-field label {
+    color: var(--fg);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .roi-help {
+    color: var(--fg-muted);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .roi-control {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 96px;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .roi-control input[type="range"] {
+    width: 100%;
+    min-height: 44px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .roi-control input[type="number"],
+  .roi-select {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid rgba(224, 244, 232, 0.13);
+    border-radius: 8px;
+    background: rgba(5, 8, 7, 0.52);
+    color: var(--fg);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0.65rem 0.75rem;
+    transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+  }
+
+  .roi-control input[type="number"]:focus,
+  .roi-select:focus {
+    border-color: rgba(124, 242, 206, 0.42);
+    box-shadow: 0 0 0 3px rgba(56, 214, 174, 0.14);
+    outline: none;
+  }
+
+  .roi-select {
+    margin-top: 0.55rem;
+  }
+
+  .roi-output-panel {
+    position: sticky;
+    top: 104px;
+    display: grid;
+    gap: 1.25rem;
+    background:
+      linear-gradient(135deg, rgba(56, 214, 174, 0.14), rgba(246, 190, 79, 0.07)),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.088), rgba(255, 255, 255, 0.025));
+  }
+
+  .roi-primary-result {
+    display: grid;
+    gap: 0.6rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(224, 244, 232, 0.11);
+  }
+
+  .roi-output-note {
+    color: var(--accent-bright);
+    font-size: 11px;
+    letter-spacing: 0.12em !important;
+  }
+
+  .roi-value {
+    color: var(--fg);
+    font-family: 'Space Grotesk', 'Manrope', system-ui, sans-serif;
+    font-size: clamp(2.4rem, 5vw, 4.4rem);
+    font-weight: 700;
+    line-height: 0.95;
+    font-variant-numeric: tabular-nums;
+    transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  }
+
+  .roi-value.updating {
+    opacity: 0.38;
+    transform: translateY(4px);
+  }
+
+  .roi-primary-result p {
+    max-width: 34rem;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .roi-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid rgba(224, 244, 232, 0.1);
+    border-radius: 8px;
+    background: rgba(224, 244, 232, 0.1);
+  }
+
+  .roi-metric {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(7, 13, 11, 0.74);
+  }
+
+  .roi-metric-label {
+    color: var(--fg-muted);
+    font-size: 10px;
+    letter-spacing: 0.11em !important;
+  }
+
+  .roi-metric-value {
+    color: var(--fg);
+    font-family: 'Space Grotesk', 'Manrope', system-ui, sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  }
+
+  .roi-metric-value.updating {
+    opacity: 0.38;
+    transform: translateY(3px);
+  }
+
+  .roi-meter {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .roi-meter-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .roi-meter-track {
+    height: 12px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(5, 8, 7, 0.7);
+    border: 1px solid rgba(224, 244, 232, 0.11);
+  }
+
+  .roi-meter-fill {
+    display: block;
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+    box-shadow: 0 0 22px rgba(56, 214, 174, 0.22);
+    transition: width var(--dur-base) var(--ease);
+  }
+
+  .roi-chart {
+    position: relative;
+    min-height: 220px;
+    padding: 1rem;
+    border: 1px solid rgba(224, 244, 232, 0.1);
+    border-radius: 8px;
+    background:
+      repeating-linear-gradient(0deg, rgba(224, 244, 232, 0.055) 0 1px, transparent 1px 42px),
+      rgba(5, 8, 7, 0.34);
+    overflow: hidden;
+  }
+
+  .roi-chart::before {
+    content: '';
+    position: absolute;
+    inset: 14% 8% 16%;
+    background:
+      linear-gradient(90deg, transparent, rgba(56, 214, 174, 0.18), transparent),
+      linear-gradient(180deg, rgba(246, 190, 79, 0.09), transparent);
+    clip-path: polygon(0 74%, 18% 64%, 34% 68%, 50% 42%, 66% 49%, 82% 24%, 100% 30%, 100% 38%, 84% 32%, 68% 58%, 52% 50%, 36% 78%, 19% 73%, 0 84%);
+    opacity: 0.72;
+    pointer-events: none;
+  }
+
+  .roi-chart-bars {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    min-height: 170px;
+    align-items: end;
+  }
+
+  .roi-bar {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 0.6rem;
+    min-width: 0;
+    height: 170px;
+  }
+
+  .roi-bar-fill {
+    align-self: end;
+    min-height: 18px;
+    height: var(--bar-height, 30%);
+    border-radius: 8px 8px 3px 3px;
+    background:
+      linear-gradient(180deg, rgba(246, 190, 79, 0.96), rgba(56, 214, 174, 0.82));
+    box-shadow: 0 0 24px rgba(56, 214, 174, 0.16);
+    transform-origin: bottom;
+    transition: height var(--dur-base) var(--ease), filter var(--dur-base) var(--ease);
+  }
+
+  .roi-bar-fill.negative {
+    background:
+      linear-gradient(180deg, rgba(255, 126, 103, 0.94), rgba(246, 190, 79, 0.78));
+  }
+
+  .roi-bar span {
+    color: var(--fg-muted);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .roi-breakdown-panel {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 1rem;
+  }
+
+  .roi-breakdown-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .roi-breakdown-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(224, 244, 232, 0.08);
+  }
+
+  .roi-breakdown-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .roi-mini-label {
+    color: var(--fg-muted);
+    font-size: 10px;
+    letter-spacing: 0.1em !important;
+    margin-bottom: 0.2rem;
+  }
+
+  .roi-breakdown-row strong {
+    color: var(--fg);
+    font-size: 14px;
+  }
+
+  .roi-breakdown-row span:last-child {
+    color: var(--accent-bright);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .roi-insights {
+    display: grid;
+    gap: 0.8rem;
+    align-content: start;
+  }
+
+  .roi-insight {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 0.8rem;
+    align-items: start;
+    padding: 0.85rem;
+    border: 1px solid rgba(224, 244, 232, 0.1);
+    border-radius: 8px;
+    background: rgba(5, 8, 7, 0.35);
+  }
+
+  .roi-insight-icon {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(56, 214, 174, 0.2), rgba(246, 190, 79, 0.11));
+    border: 1px solid rgba(124, 242, 206, 0.2);
+    color: var(--accent-bright);
+  }
+
+  .roi-insight-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .roi-insight b {
+    display: block;
+    color: var(--fg);
+    font-size: 14px;
+    margin-bottom: 0.2rem;
+  }
+
+  .roi-insight p {
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  @keyframes roiPulse {
+    0%, 100% { filter: saturate(0.9); }
+    50% { filter: saturate(1.22) brightness(1.08); }
+  }
+
+  .roi-output-panel:hover .roi-bar-fill {
+    animation: roiPulse 2.8s var(--ease) infinite;
+  }
+
   @keyframes metricFill {
     0%, 100% { transform: scaleX(0.45); opacity: 0.52; }
     50% { transform: scaleX(1); opacity: 1; }
@@ -885,7 +1447,8 @@
     .problem-card::after,
     .step::after,
     .service-card:not(.featured)::after,
-    .cta-card::after {
+    .cta-card::after,
+    .roi-output-panel:hover .roi-bar-fill {
       animation: none !important;
     }
   }
@@ -908,6 +1471,24 @@
     .steps::before {
       display: none;
     }
+
+    .roi-head,
+    .roi-calculator,
+    .roi-breakdown-panel {
+      grid-template-columns: 1fr;
+    }
+
+    .roi-proof {
+      border-left: 0;
+      padding-left: 0;
+      border-top: 1px solid rgba(224, 244, 232, 0.12);
+      padding-top: 1.25rem;
+    }
+
+    .roi-output-panel {
+      position: relative;
+      top: auto;
+    }
   }
 
   @media (max-width: 560px) {
@@ -926,6 +1507,25 @@
 
     .workflow-signal {
       display: none;
+    }
+
+    .roi-fieldsets,
+    .roi-metrics {
+      grid-template-columns: 1fr;
+    }
+
+    .roi-control {
+      grid-template-columns: 1fr;
+    }
+
+    .roi-segmented {
+      grid-template-columns: 1fr;
+    }
+
+    .roi-panel-head,
+    .roi-meter-top {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>
@@ -952,6 +1552,7 @@
     <div class="nav-links">
       <a href="#services">Services</a>
       <a href="projects.html">Projects</a>
+      <a href="#roi">ROI calculator</a>
       <a href="#how">How it works</a>
       <a href="#about">About</a>
       <a href="mailto:info@systemsintell.com?subject=Free%20Consult%20Inquiry&body=Hi%20Systems%20Intelligence%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20free%20consult%20to%20discuss%20how%20you%20can%20help%20improve%20my%20business%20systems.%0A%0ACould%20we%20arrange%20a%20time%20to%20talk%3F%0A%0AThanks%2C" class="nav-cta">Book a free consult</a>
@@ -965,6 +1566,7 @@
 <div class="mobile-menu">
   <a href="#services">Services</a>
   <a href="projects.html">Projects</a>
+  <a href="#roi">ROI calculator</a>
   <a href="#how">How it works</a>
   <a href="#about">About</a>
   <a href="mailto:info@systemsintell.com" class="nav-cta">Book a free consult</a>
@@ -977,11 +1579,11 @@
       <div class="hero-text">
         <div class="hero-eyebrow reveal">
           <span class="dot" aria-hidden="true"></span>
-          Based in New Zealand · Working remotely across the globe
+          <span class="hero-eyebrow-text">Based in New Zealand <span class="hero-eyebrow-separator">&middot;</span> <span class="hero-eyebrow-break">Working remotely across the globe</span></span>
         </div>
         <h1 class="display reveal" data-delay="1">
           Clean systems.<br>
-          Smarter workflows.<br>
+          Smarter <span class="mobile-title-break">workflows.</span><br>
           <span class="accent-text">Real results.</span>
         </h1>
         <p class="hero-sub reveal" data-delay="2">
@@ -1169,6 +1771,298 @@
           <li>Priority response for issues</li>
         </ul>
       </article>
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section id="roi" class="section-divider" aria-labelledby="roi-title">
+  <div class="container">
+    <div class="roi-head">
+      <div class="section-head reveal">
+        <span class="label">ROI calculator</span>
+        <h2 id="roi-title">Put a number on<br>operational mess.</h2>
+        <p class="subtext">Estimate the value of cleaning up manual work, tool overlap, handoff errors, and support overhead before you decide what is worth automating.</p>
+      </div>
+      <div class="roi-proof reveal" data-delay="1">
+        <p>This is a planning estimate for workflow consults, Airtable systems, n8n automations, and ongoing support. It is designed to show where a free consult should focus first.</p>
+        <ul class="roi-proof-list" aria-label="Calculator includes">
+          <li>Recovered staff hours</li>
+          <li>Reduced rework and errors</li>
+          <li>Subscription consolidation</li>
+          <li>Implementation payback</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roi-calculator" data-roi-calculator>
+      <form class="card roi-input-panel reveal" aria-label="Workflow ROI calculator inputs">
+        <div class="roi-panel-head">
+          <div>
+            <div class="roi-panel-kicker">Scenario inputs</div>
+            <h3>Your workflow snapshot</h3>
+          </div>
+          <button class="roi-reset" type="button" data-roi-reset aria-label="Reset calculator values">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+          </button>
+        </div>
+
+        <div>
+          <div class="roi-scenario-label roi-mini-label">Confidence level</div>
+          <div class="roi-segmented" role="group" aria-label="ROI scenario">
+            <button class="roi-scenario" type="button" data-roi-scenario="conservative" aria-pressed="false">Conservative</button>
+            <button class="roi-scenario" type="button" data-roi-scenario="expected" aria-pressed="true">Expected</button>
+            <button class="roi-scenario" type="button" data-roi-scenario="aggressive" aria-pressed="false">Aggressive</button>
+          </div>
+        </div>
+
+        <div class="roi-fieldsets">
+          <fieldset class="roi-fieldset">
+            <legend>People and time</legend>
+            <div class="roi-field">
+              <label for="roiTeamNumber">Team members in workflow</label>
+              <div class="roi-control">
+                <input id="roiTeamRange" type="range" min="1" max="80" step="1" value="12" data-roi-field="teamSize" aria-label="Team members in workflow">
+                <input id="roiTeamNumber" type="number" min="1" max="200" step="1" value="12" data-roi-field="teamSize" inputmode="numeric">
+              </div>
+              <p class="roi-help">People who touch the process each week.</p>
+            </div>
+            <div class="roi-field">
+              <label for="roiManualHoursNumber">Manual hours per person weekly</label>
+              <div class="roi-control">
+                <input id="roiManualHoursRange" type="range" min="1" max="25" step="0.5" value="6" data-roi-field="manualHours" aria-label="Manual hours per person weekly">
+                <input id="roiManualHoursNumber" type="number" min="0" max="60" step="0.5" value="6" data-roi-field="manualHours" inputmode="decimal">
+              </div>
+              <p class="roi-help">Admin, duplicate entry, chasing updates, and status checks.</p>
+            </div>
+            <div class="roi-field">
+              <label for="roiHourlyCostNumber">Loaded hourly cost, NZD</label>
+              <div class="roi-control">
+                <input id="roiHourlyCostRange" type="range" min="30" max="180" step="5" value="65" data-roi-field="hourlyCost" aria-label="Loaded hourly cost in NZD">
+                <input id="roiHourlyCostNumber" type="number" min="1" max="500" step="5" value="65" data-roi-field="hourlyCost" inputmode="decimal">
+              </div>
+              <p class="roi-help">Use wage plus overhead, not just base pay.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="roi-fieldset">
+            <legend>Friction and rework</legend>
+            <div class="roi-field">
+              <label for="roiHandoffsNumber">Manual handoffs per week</label>
+              <div class="roi-control">
+                <input id="roiHandoffsRange" type="range" min="0" max="250" step="5" value="45" data-roi-field="handoffs" aria-label="Manual handoffs per week">
+                <input id="roiHandoffsNumber" type="number" min="0" max="1000" step="5" value="45" data-roi-field="handoffs" inputmode="numeric">
+              </div>
+              <p class="roi-help">Approvals, spreadsheet updates, message follow-ups, or status moves.</p>
+            </div>
+            <div class="roi-field">
+              <label for="roiErrorRateNumber">Handoff error or rework rate</label>
+              <div class="roi-control">
+                <input id="roiErrorRateRange" type="range" min="0" max="30" step="1" value="8" data-roi-field="errorRate" aria-label="Handoff error or rework rate percentage">
+                <input id="roiErrorRateNumber" type="number" min="0" max="100" step="1" value="8" data-roi-field="errorRate" inputmode="decimal">
+              </div>
+              <p class="roi-help">Percent of handoffs that need correcting or chasing.</p>
+            </div>
+            <div class="roi-field">
+              <label for="roiErrorCostNumber">Average cost per rework event</label>
+              <div class="roi-control">
+                <input id="roiErrorCostRange" type="range" min="25" max="750" step="25" value="180" data-roi-field="errorCost" aria-label="Average cost per rework event in NZD">
+                <input id="roiErrorCostNumber" type="number" min="0" max="5000" step="25" value="180" data-roi-field="errorCost" inputmode="decimal">
+              </div>
+              <p class="roi-help">Time lost, delays, missed follow-ups, or client-facing fixes.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="roi-fieldset">
+            <legend>Tools and subscriptions</legend>
+            <div class="roi-field">
+              <label for="roiToolSpendNumber">Monthly software spend</label>
+              <div class="roi-control">
+                <input id="roiToolSpendRange" type="range" min="100" max="12000" step="100" value="1800" data-roi-field="toolSpend" aria-label="Monthly software spend in NZD">
+                <input id="roiToolSpendNumber" type="number" min="0" max="50000" step="100" value="1800" data-roi-field="toolSpend" inputmode="decimal">
+              </div>
+              <p class="roi-help">Apps, seats, integrations, and workflow tools.</p>
+            </div>
+            <div class="roi-field">
+              <label for="roiOverlapNumber">Likely tool overlap</label>
+              <div class="roi-control">
+                <input id="roiOverlapRange" type="range" min="0" max="60" step="5" value="20" data-roi-field="toolOverlap" aria-label="Likely tool overlap percentage">
+                <input id="roiOverlapNumber" type="number" min="0" max="100" step="5" value="20" data-roi-field="toolOverlap" inputmode="decimal">
+              </div>
+              <p class="roi-help">Estimated spend that could be consolidated or retired.</p>
+            </div>
+            <div class="roi-field">
+              <label for="roiAdminHoursNumber">Monthly tool admin hours</label>
+              <div class="roi-control">
+                <input id="roiAdminHoursRange" type="range" min="0" max="120" step="2" value="18" data-roi-field="adminHours" aria-label="Monthly tool administration hours">
+                <input id="roiAdminHoursNumber" type="number" min="0" max="300" step="2" value="18" data-roi-field="adminHours" inputmode="decimal">
+              </div>
+              <p class="roi-help">Fixing sync issues, exports, permissions, and manual reporting.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="roi-fieldset">
+            <legend>Project investment</legend>
+            <div class="roi-field">
+              <label for="roiImplementationNumber">One-off implementation budget</label>
+              <div class="roi-control">
+                <input id="roiImplementationRange" type="range" min="2000" max="60000" step="500" value="12000" data-roi-field="implementation" aria-label="One-off implementation budget in NZD">
+                <input id="roiImplementationNumber" type="number" min="0" max="250000" step="500" value="12000" data-roi-field="implementation" inputmode="decimal">
+              </div>
+              <p class="roi-help">Consult, design, build, testing, documentation, and handover.</p>
+            </div>
+            <div class="roi-field">
+              <label for="roiSupportNumber">Monthly support or maintenance</label>
+              <div class="roi-control">
+                <input id="roiSupportRange" type="range" min="0" max="6000" step="100" value="900" data-roi-field="support" aria-label="Monthly support or maintenance in NZD">
+                <input id="roiSupportNumber" type="number" min="0" max="25000" step="100" value="900" data-roi-field="support" inputmode="decimal">
+              </div>
+              <p class="roi-help">Continuous improvement, fixes, monitoring, and changes.</p>
+            </div>
+            <div class="roi-field">
+              <label for="roiAdoptionNumber">Expected team adoption</label>
+              <div class="roi-control">
+                <input id="roiAdoptionRange" type="range" min="40" max="100" step="5" value="80" data-roi-field="adoption" aria-label="Expected team adoption percentage">
+                <input id="roiAdoptionNumber" type="number" min="0" max="100" step="5" value="80" data-roi-field="adoption" inputmode="decimal">
+              </div>
+              <p class="roi-help">Higher adoption means more of the available value is realised.</p>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="roi-field">
+          <label for="roiWorkflowType">Primary workflow to improve</label>
+          <select id="roiWorkflowType" class="roi-select" data-roi-workflow>
+            <option value="onboarding">Customer or staff onboarding</option>
+            <option value="property">Property or asset management</option>
+            <option value="casework">Case consults or meeting tracking</option>
+            <option value="training">Training and coaching operations</option>
+            <option value="reporting">Reporting and leadership visibility</option>
+            <option value="custom">General operations workflow</option>
+          </select>
+        </div>
+      </form>
+
+      <aside class="card roi-output-panel reveal" data-delay="1" aria-live="polite" aria-label="Calculated ROI estimate">
+        <div class="roi-primary-result">
+          <span class="roi-output-note">Estimated year-one net value</span>
+          <strong class="roi-value" data-roi-output="netYearOne">$0</strong>
+          <p data-roi-output="summary">Adjust the inputs to see the annual value of simplifying the workflow before automating it.</p>
+        </div>
+
+        <div class="roi-metrics">
+          <div class="roi-metric">
+            <span class="roi-metric-label">ROI</span>
+            <strong class="roi-metric-value" data-roi-output="roiPercent">0%</strong>
+          </div>
+          <div class="roi-metric">
+            <span class="roi-metric-label">Payback</span>
+            <strong class="roi-metric-value" data-roi-output="payback">0 mo</strong>
+          </div>
+          <div class="roi-metric">
+            <span class="roi-metric-label">Hours recovered</span>
+            <strong class="roi-metric-value" data-roi-output="weeklyHours">0/wk</strong>
+          </div>
+          <div class="roi-metric">
+            <span class="roi-metric-label">3-year value</span>
+            <strong class="roi-metric-value" data-roi-output="threeYearValue">$0</strong>
+          </div>
+        </div>
+
+        <div class="roi-meter">
+          <div class="roi-meter-top">
+            <span class="roi-mini-label">Automation fit</span>
+            <strong data-roi-output="fitLabel">Calculating</strong>
+          </div>
+          <div class="roi-meter-track" aria-hidden="true">
+            <span class="roi-meter-fill" data-roi-meter></span>
+          </div>
+        </div>
+
+        <div class="roi-chart" aria-label="Projected cumulative net value over three years">
+          <div class="roi-chart-bars">
+            <div class="roi-bar">
+              <span class="roi-bar-fill" data-roi-bar="year1"></span>
+              <span>Year 1</span>
+            </div>
+            <div class="roi-bar">
+              <span class="roi-bar-fill" data-roi-bar="year2"></span>
+              <span>Year 2</span>
+            </div>
+            <div class="roi-bar">
+              <span class="roi-bar-fill" data-roi-bar="year3"></span>
+              <span>Year 3</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="card roi-breakdown-panel reveal" data-delay="2">
+        <div>
+          <div class="roi-panel-kicker">Value breakdown</div>
+          <h3>Where the return comes from</h3>
+          <div class="roi-breakdown-list" aria-label="Annual value breakdown">
+            <div class="roi-breakdown-row">
+              <div>
+                <div class="roi-mini-label">Time savings</div>
+                <strong>Manual work recovered</strong>
+              </div>
+              <span data-roi-output="timeSavings">$0</span>
+            </div>
+            <div class="roi-breakdown-row">
+              <div>
+                <div class="roi-mini-label">Quality lift</div>
+                <strong>Rework and error reduction</strong>
+              </div>
+              <span data-roi-output="errorSavings">$0</span>
+            </div>
+            <div class="roi-breakdown-row">
+              <div>
+                <div class="roi-mini-label">Stack cleanup</div>
+                <strong>Tool consolidation</strong>
+              </div>
+              <span data-roi-output="toolSavings">$0</span>
+            </div>
+            <div class="roi-breakdown-row">
+              <div>
+                <div class="roi-mini-label">Admin relief</div>
+                <strong>Reporting and tool support</strong>
+              </div>
+              <span data-roi-output="adminSavings">$0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="roi-insights" aria-label="Recommended next steps">
+          <div class="roi-insight">
+            <span class="roi-insight-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-7"/></svg>
+            </span>
+            <div>
+              <b data-roi-output="priorityTitle">Find the highest-leverage workflow</b>
+              <p data-roi-output="priorityText">Your estimate will identify whether process cleanup, automation, or tool consolidation should come first.</p>
+            </div>
+          </div>
+          <div class="roi-insight">
+            <span class="roi-insight-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h10"/><path d="M4 19h7"/><path d="m15 18 2 2 4-5"/></svg>
+            </span>
+            <div>
+              <b>Use this on a discovery call</b>
+              <p>Bring the assumptions, not just the result. The best opportunities usually appear when the workflow is mapped end-to-end.</p>
+            </div>
+          </div>
+          <div class="roi-insight">
+            <span class="roi-insight-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8h14"/><path d="M7 16h10"/></svg>
+            </span>
+            <div>
+              <b>Directional estimate</b>
+              <p>This calculator is for planning only. Real ROI depends on process quality, adoption, data hygiene, and implementation scope.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
